@@ -450,12 +450,19 @@
         </div>
       </div>
 
-      <div class="form-actions">
+      <div class="form-actions" style="display: flex; gap: 15px; flex-wrap: wrap;">
+        
+        <button type="button" class="btn-save-draft" onclick="saveProgress()" style="background: #eab308; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s;">
+          <i class="fas fa-save"></i>
+          <span data-en="Save Progress Locally" data-si="ප්‍රගතිය සුරකින්න">Save Progress Locally</span>
+        </button>
+
         <button type="button" class="btn-save-word" onclick="saveAsWord()">
           <i class="fas fa-file-word"></i>
           <span data-en="Save as Word File" data-si="Word ගොනුවක් ලෙස සුරකින්න">Save as Word File</span>
         </button>
-        <a href="index.html" class="btn-return">
+        
+        <a href="index.html" class="btn-return" style="margin-left: auto;">
           <i class="fas fa-arrow-left"></i>
           <span data-en="Return to Grant Details" data-si="ප්‍රදාන විස්තර වෙත ආපසු යන්න">Return to Grant Details</span>
         </a>

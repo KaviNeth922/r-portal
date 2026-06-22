@@ -47,9 +47,11 @@ function setLang(lang) {
   document.getElementById('html-root')?.setAttribute('lang', lang === 'si' ? 'si' : 'en');
 }
 
-// Apply saved language on load
+// Apply saved language and load saved form data on page load
 document.addEventListener('DOMContentLoaded', () => {
   setLang(currentLang);
+  loadProgress(); // Automatically fills the form if a draft exists
+  calcTotal();    // Updates the budget math
 });
 
 // ─── 3. TOGGLE HELPERS ───────────────────────────────
@@ -111,22 +113,22 @@ function calcTotal() {
 document.addEventListener('DOMContentLoaded', calcTotal);
 
 // ─── 6. DYNAMIC TABLE — RESEARCH ASSISTANTS ──────────
-function addAssistantRow() {
+function addAssistantRow(data = {}) {
   const tbody = document.getElementById('assistants-tbody');
   if (!tbody) return;
   const row = document.createElement('tr');
   row.innerHTML = `
-    <td><input type="text" placeholder="Full Name"></td>
-    <td><input type="text" placeholder="Phone / Email"></td>
+    <td><input type="text" placeholder="Full Name" value="${data.name || ''}"></td>
+    <td><input type="text" placeholder="Phone / Email" value="${data.contact || ''}"></td>
     <td>
       <select>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
+        <option value="No" ${data.pgd === 'No' ? 'selected' : ''}>No</option>
+        <option value="Yes" ${data.pgd === 'Yes' ? 'selected' : ''}>Yes</option>
       </select>
     </td>
-    <td><input type="text" placeholder="e.g. MSc, PhD"></td>
-    <td><input type="date"></td>
-    <td><input type="text" placeholder="Reg No."></td>
+    <td><input type="text" placeholder="e.g. MSc, PhD" value="${data.degree || ''}"></td>
+    <td><input type="date" value="${data.date || ''}"></td>
+    <td><input type="text" placeholder="Reg No." value="${data.regNo || ''}"></td>
     <td>
       <button type="button" class="btn-delete" onclick="deleteRow(this)">
         <i class="fas fa-trash-alt"></i>
@@ -136,15 +138,15 @@ function addAssistantRow() {
 }
 
 // ─── 7. DYNAMIC TABLE — EQUIPMENT ────────────────────
-function addEquipmentRow() {
+function addEquipmentRow(data = {}) {
   const tbody = document.getElementById('equipment-tbody');
   if (!tbody) return;
   const row = document.createElement('tr');
   row.innerHTML = `
-    <td><input type="text" placeholder="Item name"></td>
-    <td><input type="date"></td>
-    <td><input type="number" placeholder="0.00"></td>
-    <td><input type="text" placeholder="Description"></td>
+    <td><input type="text" placeholder="Item name" value="${data.name || ''}"></td>
+    <td><input type="date" value="${data.date || ''}"></td>
+    <td><input type="number" placeholder="0.00" value="${data.value || ''}"></td>
+    <td><input type="text" placeholder="Description" value="${data.desc || ''}"></td>
     <td>
       <button type="button" class="btn-delete" onclick="deleteRow(this)">
         <i class="fas fa-trash-alt"></i>
@@ -487,5 +489,92 @@ async function saveAsWord() {
       btn.innerHTML = originalText;
       btn.disabled = false;
     }
+  }
+}
+// ─── 12. LOCAL STORAGE (SAVE/LOAD PROGRESS) ──────────
+
+// List of all standard input/textarea/select IDs on the page
+const fieldIdsToSave = [
+  'report-number', 'period-from', 'period-to', 'project-title', 'exec-summary', 
+  'principal-inv', 'co-inv', 'date-award', 'date-commence', 'faculty', 'department', 
+  'tech-assistants', 'objectives', 'obj-achieved', 'deviations', 'deviation-desc', 
+  'prior-approval', 'approval-reason', 'on-schedule', 'schedule-reason', 
+  'impl-comments', 'work-plan', 'exp-personal', 'exp-equipment', 'exp-consumables', 
+  'exp-lab', 'exp-stats', 'exp-calib', 'exp-pgfee', 'exp-travel', 'exp-misc'
+];
+
+function saveProgress() {
+  const draft = { inputs: {}, assistants: [], equipment: [] };
+  
+  // 1. Save standard fields
+  fieldIdsToSave.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) draft.inputs[id] = el.value;
+  });
+
+  // 2. Save dynamic tables
+  draft.assistants = getAssistantsData();
+  draft.equipment = getEquipmentData();
+
+  // 3. Store in browser
+  localStorage.setItem('usj-portal-draft', JSON.stringify(draft));
+  
+  // 4. User feedback
+  const btn = document.querySelector('.btn-save-draft');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = `<i class="fas fa-check"></i> <span>Saved!</span>`;
+  btn.style.background = '#16a34a'; // Turn green
+  setTimeout(() => {
+    btn.innerHTML = originalText;
+    btn.style.background = '#eab308'; // Turn back to yellow
+  }, 2000);
+}
+
+function loadProgress() {
+  const draftStr = localStorage.getItem('usj-portal-draft');
+  if (!draftStr) return; // No saved draft exists
+  
+  try {
+    const draft = JSON.parse(draftStr);
+
+    // 1. Restore standard fields
+    for (const [id, value] of Object.entries(draft.inputs)) {
+      const el = document.getElementById(id);
+      if (el) el.value = value;
+    }
+
+    // 2. Restore Assistants Table
+    const aBody = document.getElementById('assistants-tbody');
+    if (aBody && draft.assistants.length > 0) {
+      aBody.innerHTML = ''; // Clear default rows
+      // Filter out completely empty rows before reloading
+      const validAssistants = draft.assistants.filter(a => a.name || a.contact || a.degree || a.regNo);
+      if (validAssistants.length > 0) {
+        validAssistants.forEach(data => addAssistantRow(data));
+      } else {
+        addAssistantRow(); // Fallback to 1 empty row
+      }
+    }
+
+    // 3. Restore Equipment Table
+    const eBody = document.getElementById('equipment-tbody');
+    if (eBody && draft.equipment.length > 0) {
+      eBody.innerHTML = ''; // Clear default rows
+      const validEquipment = draft.equipment.filter(e => e.name || e.value || e.desc);
+      if (validEquipment.length > 0) {
+        validEquipment.forEach(data => addEquipmentRow(data));
+      } else {
+        addEquipmentRow(); // Fallback to 1 empty row
+      }
+    }
+
+    // 4. Trigger visual toggles and calculations
+    toggleDeviation();
+    toggleApprovalReason();
+    toggleScheduleReason();
+    calcTotal();
+
+  } catch (error) {
+    console.error("Failed to load saved progress:", error);
   }
 }
