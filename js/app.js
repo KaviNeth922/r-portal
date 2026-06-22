@@ -230,7 +230,6 @@ async function saveAsWord() {
   }
 
   try {
-    // Drop the "window." and destructure directly from the global "docx" object
     const {
       Document, Packer, Paragraph, TextRun, Table, TableRow,
       TableCell, WidthType, AlignmentType, HeadingLevel,
@@ -255,11 +254,19 @@ async function saveAsWord() {
       spacing: { after: 80 }
     });
 
+    // ── Helper: get file name ──
+    const getFileName = (id) => {
+      const fileInput = document.getElementById(id);
+      if (fileInput && fileInput.files.length > 0) {
+        return "Attached File: " + fileInput.files[0].name;
+      }
+      return 'No file attached';
+    };
+
     // ── Helper: table with header row ──
     const makeTable = (headers, rows) => new Table({
       width: { size: 100, type: WidthType.PERCENTAGE },
       rows: [
-        // Header row
         new TableRow({
           children: headers.map(h => new TableCell({
             children: [new Paragraph({
@@ -269,7 +276,6 @@ async function saveAsWord() {
             margins: { top: 80, bottom: 80, left: 120, right: 120 }
           }))
         }),
-        // Data rows
         ...rows.map(r => new TableRow({
           children: r.map(cell => new TableCell({
             children: [new Paragraph({
@@ -309,9 +315,7 @@ async function saveAsWord() {
       },
       sections: [{
         properties: {
-          page: {
-            margin: { top: 720, bottom: 720, left: 900, right: 900 }
-          }
+          page: { margin: { top: 720, bottom: 720, left: 900, right: 900 } }
         },
         headers: {
           default: new Header({
@@ -394,23 +398,26 @@ async function saveAsWord() {
           new Paragraph({ spacing: { after: 100 } }),
           field('Number of Technical Assistants/Labourers', gv('tech-assistants') || '0'),
 
-          // ── SECTION 4: Project Details ──
+            // ── SECTION 4: Project Details ──
           sectionHead('4. Details of the Project'),
-          field('Objectives of the Project',                        gv('objectives')),
-          field('Objectives Achieved to Date',                      gv('obj-achieved')),
-          field('Are there any Deviations in Work Plan?',           gv('deviations')),
-          field('Description of Deviations',                        gv('deviation-desc') || 'N/A'),
-          field('Prior Approval Obtained for Deviations?',          gv('prior-approval')),
-          field('Reason Approval Not Obtained',                     gv('approval-reason') || 'N/A'),
+          field('Objectives of the project',                        gv('objectives')),
+          field('Objectives achieved to date',                      gv('obj-achieved')),
+          field('Description of research carried out',              getFileName('file-description')),
+          field('Results/Observations/Outputs',                     getFileName('file-results')),
+          field('Gantt chart for work done',                        getFileName('file-gantt')),
+          field('Are there any deviations in the work plan when compared to the original?', gv('deviations')),
+          field('Please describe the deviations',                   gv('deviation-desc') || 'N/A'),
+          field('Did you obtain prior approval from the Research Council for the deviations?', gv('prior-approval')),
+          field('Please explain why approval was not obtained',     gv('approval-reason') || 'N/A'),
 
           // ── SECTION 5: Project Expenditure ──
           sectionHead('5. Project Expenditure'),
-          field('Is the Work on Schedule?', gv('on-schedule')),
-          field('Reasons (if not on schedule)', gv('schedule-reason') || 'N/A'),
+          field('Is the work on schedule?', gv('on-schedule')),
+          field('If not give reasons', gv('schedule-reason') || 'N/A'),
 
           new Paragraph({
             children: [new TextRun({
-              text: 'Major Equipment Purchased:', bold: true, size: 22, font: 'Calibri'
+              text: 'List major items of equipment purchased during the reporting period:', bold: true, size: 22, font: 'Calibri'
             })],
             spacing: { before: 120, after: 80 }
           }),
@@ -419,10 +426,14 @@ async function saveAsWord() {
             equipRows
           ),
           new Paragraph({ spacing: { after: 160 } }),
+          
+          field('Please provide the Interim Financial Statement issued by the Bursar of the faculty', getFileName('file-financial')),
+          field('Comments regarding project implementation, if any', gv('impl-comments') || 'N/A'),
+          field('Submit a brief work plan for the next 06 months',    gv('work-plan')),
 
           new Paragraph({
             children: [new TextRun({
-              text: 'Projected Expenditure for Next 6 Months:', bold: true, size: 22, font: 'Calibri'
+              text: 'Give projected expenditure for the next 6 months (Rs.)i.e. grantee’s estimate:', bold: true, size: 22, font: 'Calibri'
             })],
             spacing: { before: 120, after: 80 }
           }),
@@ -442,12 +453,11 @@ async function saveAsWord() {
             ]
           ),
           new Paragraph({ spacing: { after: 120 } }),
-          field('Work Plan for Next 06 Months',    gv('work-plan')),
-          field('Comments on Project Implementation', gv('impl-comments') || 'N/A'),
 
           // ── SECTION 6: Evidence for Publication ──
           sectionHead('6. Evidence for Publication'),
           field('List of Publications', gv('publications') || 'N/A'),
+          field('Publications/Communications Evidence', getFileName('file-publications')),
 
           // ── CLOSING ──
           new Paragraph({ spacing: { before: 400 } }),

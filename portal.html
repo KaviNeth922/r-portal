@@ -29,9 +29,9 @@
     <div class="nav-right">
       <div class="nav-user">
         <i class="fas fa-user-circle"></i>
-        <span data-en="Good Morning Prof. KB.G.S.K. Gamlath"
+        <span data-en="Good Morning"
               data-si="සුභ උදෑසනක්">
-          Good Morning Prof. KB.G.S.K. Gamlath
+          Good Morning
         </span>
         <span class="nav-datetime" id="nav-datetime"></span>
       </div>
@@ -262,7 +262,7 @@
           </div>
 
           <div class="form-group">
-            <label data-en="Are there any deviations in the work plan when compared to the original? *" data-si="මුල් සැලැස්මට සාපේක්ෂව කාර්ය සැලැස්මේ කිසියම් වෙනසක්/බිඳවැටීමක් තිබේද? *">Are there any deviations in the work plan compared to the original? *</label>
+            <label data-en="Are there any deviations in the work plan when compared to the original? *" data-si="මුල් සැලැස්මට සාපේක්ෂව කාර්ය සැලැස්මේ කිසියම් වෙනසක්/බිඳවැටීමක් තිබේද? *">Are there any deviations in the work plan when compared to the original? *</label>
             <select id="deviations" onchange="toggleDeviation()">
               <option value="No" data-en="No" data-si="නැත">No</option>
               <option value="Yes" data-en="Yes" data-si="ඔව්">Yes</option>
@@ -270,7 +270,7 @@
           </div>
 
           <div class="form-group" id="deviation-desc-group" style="display:none;">
-            <label data-en="Please describe the deviations *" data-si="කරුණාකර වෙනස්වීම්/බිඳවැටීම් විස්තර කරන්න *">Please describe the deviations *</label>
+            <label data-en="Please describe the deviations (If No for the above please type N/A): *" data-si="කරුණාකර වෙනස්වීම්/බිඳවැටීම් විස්තර කරන්න (ඉහත සඳහා 'නැත' නම් කරුණාකර N/A ලෙස යතුරුලියනය කරන්න): *">Please describe the deviations (If No for the above please type N/A): *</label>
             <textarea id="deviation-desc" rows="4"></textarea>
           </div>
 
@@ -283,7 +283,7 @@
           </div>
 
           <div class="form-group" id="approval-reason-group" style="display:none;">
-            <label data-en="Please explain why approval was not obtained *" data-si="අනුමැතිය ලබා නොගැනීමට හේතුව කරුණාකර පැහැදිලි කරන්න *">Please explain why approval was not obtained *</label>
+            <label data-en="Please explain why approval was not obtained (If Yes for the above please type N/A): *" data-si="අනුමැතිය ලබා නොගැනීමට හේතුව කරුණාකර පැහැදිලි කරන්න (ඉහත සඳහා 'ඔව්' නම් කරුණාකර N/A ලෙස යතුරුලියනය කරන්න): *">Please explain why approval was not obtained (If Yes for the above please type N/A): *</label>
             <textarea id="approval-reason" rows="4"></textarea>
           </div>
 
@@ -297,7 +297,7 @@
         <div class="card-body">
 
           <div class="form-group">
-            <label data-en="Is the work on schedule? *" data-si="කාර්යයන් කාලසටහනට අනුව සිදුවේද? *">Is the work on schedule? *</label>
+            <label data-en="Is the work on schedule? :*" data-si="කාර්යයන් කාලසටහනට අනුව සිදුවේද? :*">Is the work on schedule? :*</label>
             <select id="on-schedule" onchange="toggleScheduleReason()">
               <option value="Yes" data-en="Yes" data-si="ඔව්">Yes</option>
               <option value="No" data-en="No" data-si="නැත">No</option>
@@ -305,12 +305,12 @@
           </div>
 
           <div class="form-group" id="schedule-reason-group" style="display:none;">
-            <label data-en="If not, give reasons *" data-si="නොඑසේ නම්, හේතු දක්වන්න *">If not, give reasons *</label>
+            <label data-en="If not give reasons (If Yes for the above please type N/A):*" data-si="නොඑසේ නම්, හේතු දක්වන්න (ඉහත සඳහා 'ඔව්' නම් කරුණාකර N/A ලෙස යතුරුලියනය කරන්න):*">If not give reasons (If Yes for the above please type N/A):*</label>
             <textarea id="schedule-reason" rows="3"></textarea>
           </div>
 
           <div class="form-group">
-            <label data-en="List major items of equipment purchased during the reporting period" data-si="වාර්තා කරන කාලය තුළ මිලදී ගත් ප්‍රධාන උපකරණ ලැයිස්තුව">List major items of equipment purchased during the reporting period</label>
+            <label data-en="List major items of equipment purchased during the reporting period:" data-si="වාර්තා කරන කාලය තුළ මිලදී ගත් ප්‍රධාන උපකරණ ලැයිස්තුව:">List major items of equipment purchased during the reporting period:</label>
           </div>
 
           <div class="table-wrapper">
@@ -319,13 +319,24 @@
                 <tr>
                   <th data-en="Name" data-si="නම">Name</th>
                   <th data-en="Date of Purchase" data-si="මිලදී ගත් දිනය">Date of Purchase</th>
-                  <th data-en="Value (Rs.)" data-si="වටිනාකම (රු.)">Value (Rs.)</th>
+                  <th data-en="Value" data-si="වටිනාකම">Value</th>
                   <th data-en="Description" data-si="විස්තරය">Description</th>
                   <th data-en="Action" data-si="ක්‍රියාව">Action</th>
                 </tr>
               </thead>
               <tbody id="equipment-tbody">
-                </tbody>
+                <tr>
+                  <td><input type="text" value="-"></td>
+                  <td><input type="date"></td>
+                  <td><input type="number" placeholder="0.00"></td>
+                  <td><input type="text"></td>
+                  <td>
+                    <button type="button" class="btn-delete" onclick="deleteRow(this)">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
 
@@ -335,7 +346,7 @@
           </button>
 
           <div class="form-group file-upload-group mt-16">
-            <label data-en="Please provide the Interim Financial Statement issued by the Bursar of the faculty *" data-si="කරුණාකර පීඨයේ මූල්‍යාධිකාරී විසින් නිකුත් කරන ලද අතුරු මූල්‍ය ප්‍රකාශනය සපයන්න *">Interim Financial Statement (Bursar) *</label>
+            <label data-en="Please provide the Interim Financial Statement issued by the Bursar of the faculty:*" data-si="කරුණාකර පීඨයේ මූල්‍යාධිකාරී විසින් නිකුත් කරන ලද අතුරු මූල්‍ය ප්‍රකාශනය සපයන්න:*">Please provide the Interim Financial Statement issued by the Bursar of the faculty:*</label>
             <div class="file-row">
               <input type="file" id="file-financial" accept=".pdf,.doc,.docx">
               <label for="file-financial" class="file-label" data-en="Choose File" data-si="ගොනුව තෝරන්න">Choose File</label>
@@ -344,17 +355,20 @@
           </div>
 
           <div class="form-group">
-            <label data-en="Comments regarding project implementation, if any" data-si="ව්‍යාපෘති ක්‍රියාත්මක කිරීම සම්බන්ධයෙන් අදහස්, ඇත්නම්">Comments regarding project implementation, if any</label>
+            <label data-en="Comments regarding project implementation, if any :" data-si="ව්‍යාපෘති ක්‍රියාත්මක කිරීම සම්බන්ධයෙන් අදහස්, ඇත්නම් :">Comments regarding project implementation, if any :</label>
             <textarea id="impl-comments" rows="4"></textarea>
           </div>
 
           <div class="form-group">
-            <label data-en="Submit a brief work plan for the next 06 months *" data-si="ඉදිරි මාස 06 සඳහා කෙටි කාර්ය සැලැස්මක් ඉදිරිපත් කරන්න *">Submit a brief work plan for the next 06 months *</label>
-            <textarea id="work-plan" rows="5" placeholder="Please type brief work plan for the next 06 months"></textarea>
+            <label data-en="Submit a brief work plan for the next 06 months: :*" data-si="ඉදිරි මාස 06 සඳහා කෙටි කාර්ය සැලැස්මක් ඉදිරිපත් කරන්න: :*">Submit a brief work plan for the next 06 months: :*</label>
+            <textarea id="work-plan" rows="5" 
+                      placeholder="Please type brief work plan for the next 06 months"
+                      data-placeholder-en="Please type brief work plan for the next 06 months"
+                      data-placeholder-si="කරුණාකර ඉදිරි මාස 06 සඳහා කෙටි කාර්ය සැලැස්ම යතුරුලියනය කරන්න"></textarea>
           </div>
 
           <div class="form-group">
-            <label data-en="Give projected expenditure for the next 6 months (Rs.)" data-si="ඉදිරි මාස 6 සඳහා ඇස්තමේන්තුගත වියදම් දක්වන්න (රු.)">Give projected expenditure for the next 6 months (Rs.)</label>
+            <label data-en="Give projected expenditure for the next 6 months (Rs.)i.e. grantee’s estimate :" data-si="ඉදිරි මාස 6 සඳහා ඇස්තමේන්තුගත වියදම් දක්වන්න (රු.) එනම් ප්‍රතිලාභියාගේ ඇස්තමේන්තුව :">Give projected expenditure for the next 6 months (Rs.)i.e. grantee’s estimate :</label>
           </div>
 
           <div class="table-wrapper">
@@ -387,7 +401,7 @@
                   <td><input type="number" class="exp-input" id="exp-stats" value="" oninput="calcTotal()"></td>
                 </tr>
                 <tr>
-                  <td data-en="Calibration of instruments" data-si="උපකරණ ක්‍රමාංකනය (Calibration)">Calibration of instruments</td>
+                  <td data-en="Calibration of instruments" data-si="උපකරණ ක්‍රමාංකනය">Calibration of instruments</td>
                   <td><input type="number" class="exp-input" id="exp-calib" value="" oninput="calcTotal()"></td>
                 </tr>
                 <tr>
@@ -404,7 +418,7 @@
                 </tr>
                 <tr class="total-row">
                   <td data-en="Total" data-si="එකතුව"><strong>Total</strong></td>
-                  <td><input type="text" id="exp-total" value="848,550.00" readonly class="total-input"></td>
+                  <td><input type="text" id="exp-total" value="848550.00" readonly class="total-input"></td>
                 </tr>
               </tbody>
             </table>
