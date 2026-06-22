@@ -1,15 +1,106 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>USJ Research Council – Researcher Portal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Sinhala:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USJ - Research Council - Researcher Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- docx.js — Word Document Generator -->
+  <script src="https://unpkg.com/docx@9.7.1/build/index.js"></script>
+
+  <!-- FileSaver.js — Triggers browser file download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <!-- Google Fonts — Inter (modern SaaS feel) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome — Icons for toggle, buttons, etc. -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="login-page">
+
+  <!-- ═══ LANGUAGE TOGGLE (Top Right) ═══ -->
+  <div class="lang-toggle-wrapper">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <span class="lang-divider">|</span>
+    <button class="lang-btn" id="btn-si" onclick="setLang('si')">සිං</button>
+  </div>
+
+  <!-- ═══ BACKGROUND ═══ -->
+  <div class="login-bg"></div>
+
+  <!-- ═══ LOGIN CARD ═══ -->
+  <div class="login-container">
+    <div class="login-card">
+
+      <!-- Logo -->
+      <div class="login-logo">
+        <div class="logo-circle">
+          <i class="fas fa-university"></i>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="login-title" data-en="Welcome to Researcher Portal" data-si="පර්යේෂක ද්වාරයට සාදරයෙන් පිළිගනිමු">
+        Welcome to Researcher Portal
+      </h1>
+      <h2 class="login-subtitle" data-en="Research Council" data-si="පර්යේෂණ සභාව">
+        Research Council
+      </h2>
+      <h3 class="login-uni" data-en="University of Sri Jayewardenepura" data-si="ශ්‍රී ජයවර්ධනපුර විශ්වවිද්‍යාලය">
+        University of Sri Jayewardenepura
+      </h3>
+
+      <!-- Subtitle hint -->
+      <p class="login-hint">
+        <span data-en="If you are already registered please login. If not" data-si="ඔබ දැනටමත් ලියාපදිංචි නම් පිවිසෙන්න. නැතිනම්">
+          If you are already registered please login. If not
+        </span>
+        <a href="#" data-en="sign up now" data-si="දැන් ලියාපදිංචි වන්න">sign up now</a>
+      </p>
+
+      <!-- Form -->
+      <form class="login-form" onsubmit="handleLogin(event)">
+
+        <div class="form-group">
+          <label data-en="Username" data-si="පරිශීලක නාමය">Username</label>
+          <input type="text" id="username" placeholder="" autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label>
+            <span data-en="Password" data-si="මුරපදය">Password</span>
+            <a href="#" class="forgot-link" data-en="Forgot...? Reset Now" data-si="අමතකද? දැන් යළි සකසන්න">
+              Forgot...? Reset Now
+            </a>
+          </label>
+          <div class="password-wrapper">
+            <input type="password" id="password" placeholder="" autocomplete="current-password">
+            <button type="button" class="eye-btn" onclick="togglePassword()">
+              <i class="fas fa-eye" id="eye-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-signin">
+          <span data-en="Sign In" data-si="පිවිසෙන්න">Sign In</span>
+        </button>
+
+      </form>
+
+      <!-- Footer -->
+      <div class="login-footer">
+        <p>Designed &amp; Developed by <strong>FoC – Software Development Unit (FoC – SDU)</strong> © 2025</p>
+        <p data-en="Need Help: Call Now: 011-2802034" data-si="උදව් අවශ්‍යද? දැන් අමතන්න: 011-2802034">
+          Need Help: Call Now: 011-2802034
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
 </html>
